@@ -1,6 +1,9 @@
 from flask import Flask, request, redirect, url_for, session
 import boto3
 import os
+import hmac
+import hashlib
+import base64
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -8,7 +11,9 @@ app.secret_key = os.urandom(24)
 # Configuração do Amazon Cognito
 AWS_REGION = os.environ.get('AWS_REGION')
 USER_POOL_ID = os.environ.get('USER_POOL_ID')
+CLIENT_ID = os.environ.get('APP_CLIENT_ID')
 APP_CLIENT_ID = os.environ.get('APP_CLIENT_ID')
+CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 
 @app.route('/')
 def home():
@@ -19,7 +24,7 @@ def home():
 
 @app.route('/login')
 def login():
-    return redirect(f'https://{AWS_REGION}.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id={APP_CLIENT_ID}&redirect_uri={url_for("callback", _external=True)}')
+    return redirect(f'https://aiflow-hyland-sso-teste.auth.us-east-1.amazoncognito.com/login?client_id=34gm1o6lojq9nelj5g4tcq6hfs&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+phone+profile&redirect_uri=https%3A%2F%2Fgoogle.com')
 
 @app.route('/logout')
 def logout():
