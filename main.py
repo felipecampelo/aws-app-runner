@@ -2,18 +2,13 @@ from flask import Flask, request, redirect, url_for, session
 import boto3
 import os
 
-app = Flask(__name)
+app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
 # Configuração do Amazon Cognito
 AWS_REGION = os.environ.get('AWS_REGION')
 USER_POOL_ID = os.environ.get('USER_POOL_ID')
 APP_CLIENT_ID = os.environ.get('APP_CLIENT_ID')
-IDENTITY_POOL_ID = os.environ.get('IDENTITY_POOL_ID')
-# AWS_REGION = 'sua-regiao'
-# USER_POOL_ID = 'seu-user-pool-id'
-# APP_CLIENT_ID = 'seu-client-id'
-# IDENTITY_POOL_ID = 'seu-identity-pool-id'
 
 @app.route('/')
 def home():
