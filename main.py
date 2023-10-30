@@ -10,10 +10,6 @@ app.secret_key = os.urandom(24)
 
 # Configuração do Amazon Cognito
 AWS_REGION = os.environ.get('AWS_REGION')
-USER_POOL_ID = os.environ.get('USER_POOL_ID')
-CLIENT_ID = os.environ.get('APP_CLIENT_ID')
-APP_CLIENT_ID = os.environ.get('APP_CLIENT_ID')
-CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 
 @app.route('/')
 def home():
@@ -24,7 +20,7 @@ def home():
 
 @app.route('/login')
 def login():
-    return redirect(f'https://aiflow-hyland-sso-teste.auth.us-east-1.amazoncognito.com/login?client_id=34gm1o6lojq9nelj5g4tcq6hfs&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+phone+profile&redirect_uri=https%3A%2F%2Fgoogle.com')
+    return redirect(f'https://aiflow-hyland-sso-teste.auth.us-east-1.amazoncognito.com/oauth2/authorize?client_id=34gm1o6lojq9nelj5g4tcq6hfs&response_type=code&scope=aws.cognito.signin.user.admin+email+openid+phone+profile&redirect_uri=https%3A%2F%2Fsportrecife.com.br')
 
 @app.route('/logout')
 def logout():
@@ -32,25 +28,25 @@ def logout():
     session.pop('username', None)
     return redirect('/')
 
-@app.route('/callback')
-def callback():
-    if 'error' in request.args:
-        return 'Erro durante o login.'
+# @app.route('/callback')
+# def callback():
+#     if 'error' in request.args:
+#         return 'Erro durante o login.'
 
-    access_token = request.args['access_token']
-    id_token = request.args['id_token']
+#     access_token = request.args['access_token']
+#     id_token = request.args['id_token']
 
-    session['access_token'] = access_token
+#     session['access_token'] = access_token
 
-    # Use o SDK da AWS (boto3) para obter informações do usuário
-    client = boto3.client('cognito-idp', region_name=AWS_REGION)
-    response = client.get_user(
-        AccessToken=access_token
-    )
+#     # Use o SDK da AWS (boto3) para obter informações do usuário
+#     client = boto3.client('cognito-idp', region_name=AWS_REGION)
+#     response = client.get_user(
+#         AccessToken=access_token
+#     )
 
-    session['username'] = response['Username']
+#     session['username'] = response['Username']
 
-    return redirect('/')
+#     return redirect('/')
 
 if __name__ == '__main__':
     app.run(debug=True)
